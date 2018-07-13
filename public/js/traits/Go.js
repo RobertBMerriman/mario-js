@@ -1,0 +1,14 @@
+import {Trait} from '../Entity.js';
+
+export default class Go extends Trait{
+  constructor() {
+    super('go');
+
+    this.dir = 0;
+    this.speed = 9500;
+  }
+
+  update(entity, deltaTime) {
+    entity.vel.x = this.speed * this.dir * deltaTime;
+  }
+}
