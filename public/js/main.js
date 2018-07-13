@@ -1,6 +1,6 @@
 import {setupMouseControl} from './debug/debug.js';
 import Camera from './Camera.js';
-import Timer from './timer.js';
+import Timer from './Timer.js';
 import Entity from './Entity.js';
 import {loadLevel} from './loaders.js';
 import {createMario} from './entities.js';
