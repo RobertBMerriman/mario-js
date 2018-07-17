@@ -9,19 +9,18 @@ import {setupKeyboard} from './input.js';
 const canvas = document.getElementById('screen');
 const context = canvas.getContext('2d');
 
-// Ep 6! 13:20 Just made scrolling possible with the mouse.
+// Ep 6! 33:50 - Changed level loader to take spriteSheet from levels, goning to add details to level
+
+const camera = new Camera();
 
 Promise.all([
   createMario(),
-  loadLevel('1-1'),
+  loadLevel('1-1', camera),
 ])
 .then(([
   mario,
   level,
 ]) => {
-  const camera = new Camera();
-  window.camera = camera;
-
   mario.pos.set(64, 180);
   mario.vel.set(50, 0);
 

@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "serve ./public",
+    "start2": "serve ./public -p 5001",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",

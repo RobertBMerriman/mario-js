@@ -15,6 +15,11 @@ export default class Timer {
         skipTwo += 1;
       }
 
+      // If left idle for over 5 seconds don't bother updating
+      if (accumulatedTime > 5) {
+        accumulatedTime = 0;
+      }
+
       while (accumulatedTime > deltaTime) {
         this.update(deltaTime);
         accumulatedTime -= deltaTime;
