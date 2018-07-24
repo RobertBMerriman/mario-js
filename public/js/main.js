@@ -10,7 +10,7 @@ const canvas = document.getElementById('screen');
 const context = canvas.getContext('2d');
 context.imageSmoothingEnabled = false;
 
-// Ep 7: 8:50 About to route some frames
+// Ep 7: 25:00
 
 const camera = new Camera();
 
