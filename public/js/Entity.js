@@ -29,4 +29,5 @@ export default class Entity {
       trait.update(this, deltaTime);
     });
   }
+
 }

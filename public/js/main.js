@@ -8,8 +8,9 @@ import {setupKeyboard} from './input.js';
 
 const canvas = document.getElementById('screen');
 const context = canvas.getContext('2d');
+context.imageSmoothingEnabled = false;
 
-// Ep 6! 33:50 - Changed level loader to take spriteSheet from levels, goning to add details to level
+// Ep 7: 8:50 About to route some frames
 
 const camera = new Camera();
 

@@ -47,7 +47,7 @@ function createTiles(level, backgrounds) {
   });
 }
 
-function loadSpriteSheet(name) {
+export function loadSpriteSheet(name) {
   return loadJson(`/sprites/${name}.json`)
   .then(sheetSpec => Promise.all([
     sheetSpec,
@@ -55,9 +55,19 @@ function loadSpriteSheet(name) {
   ]))
   .then(([sheetSpec, image]) => {
     const sprites = new SpriteSheet(image, sheetSpec.tileW, sheetSpec.tileH);
-    sheetSpec.tiles.forEach(tile => {
-      sprites.defineTile(tile.name, tile.index[0], tile.index[1]);
-    });
+
+    if (sheetSpec.tiles) {
+      sheetSpec.tiles.forEach(tileSpec => {
+        sprites.defineTile(tileSpec.name, tileSpec.index[0], tileSpec.index[1]);
+      });
+    }
+
+    if (sheetSpec.frames) {
+      sheetSpec.frames.forEach(frameSpec => {
+        sprites.define(frameSpec.name, ...frameSpec.rect);
+      });
+    }
+
     return sprites;
   });
 }
@@ -78,9 +88,9 @@ export function loadLevel(name, camera) {
     const backgroundLayer = createBackgroundLayer(level, backgroundSprites);
     level.compositor.layers.push(backgroundLayer);
 
-    level.compositor.layers.push(
-      createCollisionLayer(level),
-      createCameraLayer(camera));
+    // level.compositor.layers.push(
+    //   createCollisionLayer(level),
+    //   createCameraLayer(camera));
 
     const spriteLayer = createSpriteLayer(level.entities);
     level.compositor.layers.push(spriteLayer);

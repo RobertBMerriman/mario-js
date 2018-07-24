@@ -44,7 +44,7 @@ export function createSpriteLayer(entities, width = 64, height = 64) {
 
   return function drawSpriteLayer(context, camera) {
     entities.forEach((entity) => {
-      spriteBufferContext.clearRect(0, 0, width, height)
+      spriteBufferContext.clearRect(0, 0, width, height);
       entity.draw(spriteBufferContext);
       context.drawImage(spriteBuffer,
         entity.pos.x - camera.pos.x,
@@ -63,7 +63,7 @@ export function createCollisionLayer(level) {
   tileResolver.getByIndex = function getByIndexFake(x, y) {
     resolvedTiles.push({x, y});
     return getByIndexOriginal.call(tileResolver, x, y);
-  }
+  };
 
   return function drawCollision(context, camera) {
     context.strokeStyle = 'blue';
@@ -91,7 +91,7 @@ export function createCollisionLayer(level) {
 
 export function createCameraLayer(cameraToDraw) {
   return function drawCameraRect(context, fromCamera) {
-    context.strokeStyle = 'purple'
+    context.strokeStyle = 'purple';
     context.beginPath();
     context.rect(
       cameraToDraw.pos.x - fromCamera.pos.x, cameraToDraw.pos.y - fromCamera.pos.y,
