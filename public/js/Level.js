@@ -6,6 +6,7 @@ export default class Level {
 
   constructor() {
     this.gravity = 2000;
+    this.totalTime = 0;
 
     this.compositor = new Compositor();
     this.entities = new Set();
@@ -14,6 +15,8 @@ export default class Level {
   }
 
   update(deltaTime) {
+    this.totalTime += deltaTime;
+
     this.entities.forEach(entity => {
       entity.update(deltaTime);
 
