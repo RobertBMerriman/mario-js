@@ -21,7 +21,7 @@ Promise.all([
   mario,
   level,
 ]) => {
-  mario.pos.set(64, 180);
+  mario.pos.set(64, -180);
 
   level.entities.add(mario);
 
