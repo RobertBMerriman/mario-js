@@ -1,4 +1,3 @@
-import {setupMouseControl} from './debug/debug.js';
 import Camera from './Camera.js';
 import Timer from './Timer.js';
 import Entity from './Entity.js';
@@ -23,20 +22,22 @@ Promise.all([
   level,
 ]) => {
   mario.pos.set(64, 180);
-  mario.vel.set(50, 0);
 
   level.entities.add(mario);
 
   const input = setupKeyboard(mario);
   input.listenTo(window);
 
-  setupMouseControl(canvas, mario, camera);
-
   const deltaTime = 1/60;
   const timer = new Timer(deltaTime);
 
   timer.update = function update(deltaTime) {
     level.update(deltaTime);
+
+    if (mario.pos.x > 100) {
+      camera.pos.x = mario.pos.x - 100;
+    }
+
     level.compositor.draw(context, camera);
   }
 
