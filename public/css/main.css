@@ -3,4 +3,35 @@
   image-rendering: -webkit-crisp-edges;
   image-rendering: pixelated;
   image-rendering: crisp-edges;
+
+  width: 512px;
+  height: 480px;
+  display: block;
+  margin: 0 auto;
+}
+
+.table-header {
+  font-weight: bold;
+  margin-bottom: 6px;
+  margin-top: 15px;
+}
+
+table {
+  box-sizing: border-box;
+  border-collapse: collapse;
+}
+
+table tr td {
+  padding: 0 6px;
+  text-align: right;
+}
+
+table tr td:first-child {
+  border-right: 1px solid black;
+  padding-left: 0;
+  text-align: left;
+}
+
+table tr th:first-child {
+  border-right: 1px solid black;
 }
