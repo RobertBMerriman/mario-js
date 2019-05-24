@@ -1,7 +1,6 @@
 import Camera from './Camera.js';
 import Timer from './Timer.js';
-import Entity from './Entity.js';
-import {loadLevel} from './loaders.js';
+import {loadLevel} from './loaders/level.js';
 import {createMario} from './entities.js';
 import {setupKeyboard} from './input.js';
 
@@ -9,7 +8,7 @@ const canvas = document.getElementById('screen');
 const context = canvas.getContext('2d');
 context.imageSmoothingEnabled = false;
 
-// Ep 7: 25:00
+// Ep 10 MUDDAFUKAS
 
 const camera = new Camera();
 
