@@ -1,35 +1,43 @@
 import Camera from './Camera.js';
 import Timer from './Timer.js';
 import {loadLevel} from './loaders/level.js';
-import {createMario} from './entities.js';
 import {setupKeyboard} from './input.js';
+import { loadEntites } from './entities.js'
 
 const canvas = document.getElementById('screen');
 const context = canvas.getContext('2d');
 context.imageSmoothingEnabled = false;
 
-// Ep 10 MUDDAFUKAS
+// Ep 11 MUDDAFUKAS
 
 const camera = new Camera();
 
 Promise.all([
-  createMario(),
+  loadEntites(),
   loadLevel('1-1', camera),
 ])
 .then(([
-  mario,
+  entityFactories,
   level,
 ]) => {
-  mario.pos.set(64, -180);
+  const goomba = entityFactories.goomba()
+  goomba.pos.x = 224
+  level.entities.add(goomba)
 
+  const koopa = entityFactories.koopa()
+  koopa.pos.x = 264
+  level.entities.add(koopa)
+
+  const mario = entityFactories.mario()
+  mario.pos.set(64, -180);
   level.entities.add(mario);
 
   const input = setupKeyboard(mario);
   input.listenTo(window);
 
+
   const deltaTime = 1/60;
   const timer = new Timer(deltaTime);
-
   timer.update = function update(deltaTime) {
     level.update(deltaTime);
 

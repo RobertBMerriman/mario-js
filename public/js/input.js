@@ -13,7 +13,7 @@ export function setupKeyboard(entity) {
     });
   });
 
-  ["KeyL", "KeyZ"].forEach(code => {
+  ["KeyL", "KeyZ", "ShiftLeft", "ShiftRight"].forEach(code => {
     input.addMapping(code, (keyState) => {
       entity.go.dragFactor = keyState ? entity.go.runDrag: entity.go.walkDrag;
     });
