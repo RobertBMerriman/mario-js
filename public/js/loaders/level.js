@@ -3,45 +3,68 @@ import {Matrix} from '../math.js';
 import { createBackgroundLayer, createCameraLayer, createCollisionLayer, createSpriteLayer } from '../layers.js'
 import { loadJson, loadSpriteSheet } from '../loaders.js'
 
-export function loadLevel(name, camera) {
-  return loadJson(`/levels/${name}.json`)
-    .then(levelSpec => Promise.all([
-      levelSpec,
-      loadSpriteSheet(levelSpec.spriteSheet),
-    ])).then(([
-                levelSpec,
-                backgroundSprites,
-              ]) => {
-      const level = new Level();
+function setupCollision(levelSpec, level) {
+  const mergedTiles = levelSpec.layers.reduce((mergedTiles, layerSpec) => {
+    return mergedTiles.concat(layerSpec.tiles)
+  }, [])
+  const collisionGrid = createCollisionGrid(mergedTiles, levelSpec.patterns)
+  level.setCollisionGrid(collisionGrid)
+}
 
-      const mergedTiles = levelSpec.layers.reduce((mergedTiles, layerSpec) => {
-        return mergedTiles.concat(layerSpec.tiles)
-      }, [])
-      const collisionGrid = createCollisionGrid(mergedTiles, levelSpec.patterns)
-      level.setCollisionGrid(collisionGrid)
+function setupBackgrounds(levelSpec, level, backgroundSprites) {
+  levelSpec.layers.forEach(layer => {
+    const backgroundGrid = createBackgroundGrid(layer.tiles, levelSpec.patterns)
+    const backgroundLayer = createBackgroundLayer(level, backgroundGrid, backgroundSprites);
+    level.compositor.layers.push(backgroundLayer);
+  })
+}
 
-      levelSpec.layers.forEach(layer => {
-        const backgroundGrid = createBackgroundGrid(layer.tiles, levelSpec.patterns)
-        const backgroundLayer = createBackgroundLayer(level, backgroundGrid, backgroundSprites);
-        level.compositor.layers.push(backgroundLayer);
-      })
+function setupEntities(levelSpec, level, entityFactory) {
+  console.log({levelSpec_entities: levelSpec.entities, entityFactory})
 
-      level.compositor.layers.push(
-        createCollisionLayer(level),
-        createCameraLayer(camera)
-      );
+  levelSpec.entities.forEach(({name, pos: [x, y]}) => {
+    const entity = entityFactory[name]()
+    entity.pos.set(x, y)
 
-      const spriteLayer = createSpriteLayer(level.entities);
-      level.compositor.layers.push(spriteLayer);
+    level.entities.add(entity)
+  })
 
-      return level;
-    });
+  const spriteLayer = createSpriteLayer(level.entities);
+  level.compositor.layers.push(spriteLayer);
+}
+
+export function createLevelLoader(entityFactory) {
+  return function loadLevel (name, camera) {
+    return loadJson(`/levels/${name}.json`)
+      .then(levelSpec => Promise.all([
+        levelSpec,
+        loadSpriteSheet(levelSpec.spriteSheet),
+      ])).then(([
+                  levelSpec,
+                  backgroundSprites,
+                ]) => {
+        const level = new Level();
+
+        setupCollision(levelSpec, level)
+
+        setupBackgrounds(levelSpec, level, backgroundSprites)
+
+        // level.compositor.layers.push(
+        //   createCollisionLayer(level),
+        //   createCameraLayer(camera)
+        // );
+
+        setupEntities(levelSpec, level, entityFactory)
+
+        return level;
+      });
+  }
 }
 
 function createCollisionGrid(tiles, patterns) {
   const grid = new Matrix();
 
-  for (const {tile, x, y} of expanedTiles(tiles, patterns)) {
+  for (const {tile, x, y} of expandedTiles(tiles, patterns)) {
     grid.set(x, y, {type: tile.type})
   }
 
@@ -51,7 +74,7 @@ function createCollisionGrid(tiles, patterns) {
 function createBackgroundGrid(tiles, patterns) {
   const grid = new Matrix();
 
-  for (const {tile, x, y} of expanedTiles(tiles, patterns)) {
+  for (const {tile, x, y} of expandedTiles(tiles, patterns)) {
     grid.set(x, y, {name: tile.name})
   }
 
@@ -83,17 +106,12 @@ function expandRange(range) {
 
 function* expandRanges(ranges) {
   for (const range of ranges) {
-    for (const item of expandRange(range)) {
-      yield item
-    }
+    yield* expandRange(range)
   }
 }
 
-
-function expanedTiles(tiles, patterns) {
-  const expandedTiles = []
-
-  function walkTiles(tiles, offsetX, offsetY) {
+function* expandedTiles(tiles, patterns) {
+  function* walkTiles(tiles, offsetX, offsetY) {
     for (const tile of tiles) {
       for (const { x, y } of expandRanges(tile.ranges)) {
         const derivedX = x + offsetX
@@ -101,20 +119,17 @@ function expanedTiles(tiles, patterns) {
 
         if (tile.pattern) {
           const tiles = patterns[tile.pattern].tiles
-          walkTiles(tiles, derivedX, derivedY)
+          yield* walkTiles(tiles, derivedX, derivedY)
         } else {
-          expandedTiles.push({
+          yield {
             tile,
             x: derivedX,
             y: derivedY
-          })
-
+          }
         }
       }
     }
   }
 
-  walkTiles(tiles, 0, 0)
-
-  return expandedTiles
+  yield* walkTiles(tiles, 0, 0)
 }

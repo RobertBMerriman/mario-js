@@ -1,34 +1,23 @@
 import Camera from './Camera.js';
 import Timer from './Timer.js';
-import {loadLevel} from './loaders/level.js';
 import {setupKeyboard} from './input.js';
-import { loadEntites } from './entities.js'
+import { loadEntities } from './entities.js'
+import { createLevelLoader } from './loaders/level.js'
 
-const canvas = document.getElementById('screen');
-const context = canvas.getContext('2d');
-context.imageSmoothingEnabled = false;
+// Ep 12????? RUSHITTINGME???????????????????
 
-// Ep 11 MUDDAFUKAS
 
-const camera = new Camera();
+async function main(canvas) {
+  const context = canvas.getContext('2d');
+  context.imageSmoothingEnabled = false;
+  const camera = new Camera();
 
-Promise.all([
-  loadEntites(),
-  loadLevel('1-1', camera),
-])
-.then(([
-  entityFactories,
-  level,
-]) => {
-  const goomba = entityFactories.goomba()
-  goomba.pos.x = 224
-  level.entities.add(goomba)
+  const entityFactory = await loadEntities()
+  const loadLevel = createLevelLoader(entityFactory)
+  const level = await loadLevel('1-1', camera)
 
-  const koopa = entityFactories.koopa()
-  koopa.pos.x = 264
-  level.entities.add(koopa)
 
-  const mario = entityFactories.mario()
+  const mario = entityFactory.mario()
   mario.pos.set(64, -180);
   level.entities.add(mario);
 
@@ -49,4 +38,7 @@ Promise.all([
   }
 
   timer.start();
-});
+}
+
+const canvas = document.getElementById('screen');
+main(canvas)
