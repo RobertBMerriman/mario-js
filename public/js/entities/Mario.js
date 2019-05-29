@@ -1,7 +1,10 @@
 import Entity from '../Entity.js';
+import {loadSpriteSheet} from '../loaders.js';
 import Jump from '../traits/Jump.js';
 import Go from '../traits/Go.js';
-import {loadSpriteSheet} from '../loaders.js';
+import Stomper from '../traits/Stomper.js';
+import Killable from '../traits/Killable.js'
+import PlayerController from '../traits/PlayerController.js'
 
 export function loadMario() {
   return loadSpriteSheet('mario')
@@ -37,6 +40,9 @@ function createMarioFactory(sprite) {
 
     mario.addTrait(new Go());
     mario.addTrait(new Jump());
+    mario.addTrait(new Stomper())
+    mario.addTrait(new Killable())
+    mario.killable.removeAfter = 0
 
     mario.draw = drawMario
 

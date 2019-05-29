@@ -20,8 +20,6 @@ function setupBackgrounds(levelSpec, level, backgroundSprites) {
 }
 
 function setupEntities(levelSpec, level, entityFactory) {
-  console.log({levelSpec_entities: levelSpec.entities, entityFactory})
-
   levelSpec.entities.forEach(({name, pos: [x, y]}) => {
     const entity = entityFactory[name]()
     entity.pos.set(x, y)
