@@ -27,7 +27,7 @@ export class Trait {
   collides(us, them) {
   }
 
-  obstruct(side) {
+  obstruct(entity, side, match) {
   }
 
   update(entity, deltaTime, level) {
@@ -37,7 +37,6 @@ export class Trait {
 export default class Entity {
   constructor() {
     this.lifetime = 0
-    this.canCollide = true
 
     this.pos = new Vec2(0, 0);
     this.vel = new Vec2(0, 0);
@@ -59,9 +58,9 @@ export default class Entity {
     });
   }
 
-  obstruct(side) {
+  obstruct(side, match) {
     this.traits.forEach(trait => {
-      trait.obstruct(this, side);
+      trait.obstruct(this, side, match);
     });
   }
 

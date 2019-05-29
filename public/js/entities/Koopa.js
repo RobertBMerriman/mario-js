@@ -2,6 +2,8 @@ import Entity, { Trait } from '../Entity.js';
 import {loadSpriteSheet} from '../loaders.js';
 import PendulumMove from '../traits/PendulumMove.js'
 import Killable from '../traits/Killable.js'
+import Solid from '../traits/Solid.js'
+import Physics from '../traits/Physics.js'
 
 const STATE_WALKING = Symbol('walking')
 const STATE_HIDING = Symbol('hiding')
@@ -55,11 +57,6 @@ class Behaviour extends Trait {
     }
   }
 
-  handleDestory(us, them) {
-    us.canCollide = false
-    us.vel.set(Math.sign(us.pendulumMove.speed) * 100, -200)
-  }
-
   hide(us) {
     this.hideTime = 0
     us.vel.x = 0
@@ -74,7 +71,8 @@ class Behaviour extends Trait {
   }
 
   kick(us, them) {
-    us.pendulumMove.speed = this.kickSpeed * them.go.heading
+    us.pendulumMove.speed = this.kickSpeed
+    us.pendulumMove.heading = them.go.heading
     us.pendulumMove.enabled = true
     this.state = STATE_KICKED
   }
@@ -119,6 +117,8 @@ function createKoopaFactory(sprite) {
     koopa.size.set(12, 16);
     koopa.offset.set(2, 8)
 
+    koopa.addTrait(new Solid())
+    koopa.addTrait(new Physics())
     koopa.addTrait(new PendulumMove())
     koopa.addTrait(new Behaviour())
     koopa.addTrait(new Killable())
