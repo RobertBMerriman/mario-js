@@ -11,8 +11,8 @@ export default class Solid extends Trait {
     if (!this.obstructs) return
 
     if (side === Sides.BOTTOM) {
-        entity.bounds.bottom = match.y1;
-        entity.vel.y = 0;
+      entity.bounds.bottom = match.y1;
+      entity.vel.y = 0;
     } else if (side === Sides.TOP) {
       entity.bounds.top = match.y2;
       entity.vel.y = 0;

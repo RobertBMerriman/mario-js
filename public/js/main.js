@@ -5,7 +5,9 @@ import { loadEntities } from './entities.js'
 import { createLevelLoader } from './loaders/level.js'
 import Entity from './Entity.js'
 import PlayerController from './traits/PlayerController.js'
-
+import { createCameraLayer } from './layers/camera.js'
+import { createCollisionLayer } from './layers/collision.js'
+import { createDashboardLayer } from './layers/dashboard.js'
 // Ep 12 - 37:45
 
 function createPlayerEnv(playerEntity) {
@@ -20,6 +22,9 @@ function createPlayerEnv(playerEntity) {
 async function main(canvas) {
   const context = canvas.getContext('2d');
   context.imageSmoothingEnabled = false;
+  context.font = '8px SMBNES'
+  context.textBaseline = 'top';
+
   const camera = new Camera();
 
   const entityFactory = await loadEntities()
@@ -30,6 +35,12 @@ async function main(canvas) {
 
   const playerEnv = createPlayerEnv(mario)
   level.entities.add(playerEnv);
+
+  level.compositor.layers.push(
+    //   createCollisionLayer(level),
+    //   createCameraLayer(camera),
+    createDashboardLayer(playerEnv),
+  );
 
   const input = setupKeyboard(mario);
   input.listenTo(window);

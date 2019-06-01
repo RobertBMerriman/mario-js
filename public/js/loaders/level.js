@@ -1,6 +1,7 @@
 import Level from '../Level.js'
 import {Matrix} from '../math.js';
-import { createBackgroundLayer, createCameraLayer, createCollisionLayer, createSpriteLayer } from '../layers.js'
+import { createBackgroundLayer } from '../layers/background.js'
+import { createSpriteLayer } from '../layers/sprites.js'
 import { loadJson, loadSpriteSheet } from '../loaders.js'
 
 function setupCollision(levelSpec, level) {
@@ -46,11 +47,6 @@ export function createLevelLoader(entityFactory) {
         setupCollision(levelSpec, level)
 
         setupBackgrounds(levelSpec, level, backgroundSprites)
-
-        // level.compositor.layers.push(
-        //   createCollisionLayer(level),
-        //   createCameraLayer(camera)
-        // );
 
         setupEntities(levelSpec, level, entityFactory)
 
