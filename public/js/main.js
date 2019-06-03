@@ -8,6 +8,7 @@ import PlayerController from './traits/PlayerController.js'
 import { createCameraLayer } from './layers/camera.js'
 import { createCollisionLayer } from './layers/collision.js'
 import { createDashboardLayer } from './layers/dashboard.js'
+import { loadImage } from './loaders.js'
 // Ep 12 - 37:45
 
 function createPlayerEnv(playerEntity) {
@@ -34,12 +35,14 @@ async function main(canvas) {
   const mario = entityFactory.mario()
 
   const playerEnv = createPlayerEnv(mario)
+
   level.entities.add(playerEnv);
 
+  const coinImg = await loadImage('/img/coin_counter.png')
   level.compositor.layers.push(
     //   createCollisionLayer(level),
     //   createCameraLayer(camera),
-    createDashboardLayer(playerEnv),
+    createDashboardLayer(playerEnv, coinImg),
   );
 
   const input = setupKeyboard(mario);

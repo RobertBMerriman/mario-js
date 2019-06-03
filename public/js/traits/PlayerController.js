@@ -7,6 +7,8 @@ export default class PlayerController extends Trait {
     this.player = null
     this.checkpoint = new Vec2(0, 0)
     this.time = 300
+    this.score = 100
+    this.coins = 79
   }
 
   setPlayer(entity) {
