@@ -1,6 +1,7 @@
-export function createDashboardLayer(playerEnv, coinImg) {
+export function createDashboardLayer(playerController, coinImg) {
   return function drawDashboard(context) {
-    const { time, score, coins } = playerEnv.playerController
+    const { time } = playerController
+    const { score, coins } = playerController.player
 
     const timeFormatted = time.toFixed().padStart(3, '0')
     const scoreFormatted = score.toFixed().padStart(6, '0')

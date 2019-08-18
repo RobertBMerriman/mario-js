@@ -115,7 +115,7 @@ function createKoopaFactory(sprite) {
   return function createKoopa() {
     const koopa = new Entity();
     koopa.size.set(12, 16);
-    koopa.offset.set(2, 8)
+    koopa.offset.set(3, 8, -1, -8)
 
     koopa.addTrait(new Solid())
     koopa.addTrait(new Physics())

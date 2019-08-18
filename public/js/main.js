@@ -3,21 +3,25 @@ import Timer from './Timer.js';
 import {setupKeyboard} from './input.js';
 import { loadEntities } from './entities.js'
 import { createLevelLoader } from './loaders/level.js'
-import Entity from './Entity.js'
 import PlayerController from './traits/PlayerController.js'
 import { createCameraLayer } from './layers/camera.js'
 import { createCollisionLayer } from './layers/collision.js'
 import { createDashboardLayer } from './layers/dashboard.js'
 import { loadImage } from './loaders.js'
-// Ep 12 - 37:45
+
+
+
+function isDebug() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const myParam = urlParams.get('debug');
+  return myParam !== null
+}
 
 function createPlayerEnv(playerEntity) {
-  const playerEnv = new Entity()
   const playerControl = new PlayerController()
   playerControl.setPlayer(playerEntity)
   playerControl.checkpoint.set(64, 64)
-  playerEnv.addTrait(playerControl)
-  return playerEnv
+  return playerControl
 }
 
 async function main(canvas) {
@@ -29,20 +33,23 @@ async function main(canvas) {
   const camera = new Camera();
 
   const entityFactory = await loadEntities()
-  const loadLevel = createLevelLoader(entityFactory)
-  const level = await loadLevel('1-1', camera)
-
   const mario = entityFactory.mario()
+  const playerController = createPlayerEnv(mario)
 
-  const playerEnv = createPlayerEnv(mario)
-
-  level.entities.add(playerEnv);
+  const loadLevel = createLevelLoader(entityFactory)
+  const level = await loadLevel('1-1', camera, playerController)
 
   const coinImg = await loadImage('/img/coin_counter.png')
+
+  if (isDebug()) {
+    level.compositor.layers.push(
+      createCollisionLayer(level),
+      createCameraLayer(camera),
+    )
+  }
+
   level.compositor.layers.push(
-    //   createCollisionLayer(level),
-    //   createCameraLayer(camera),
-    createDashboardLayer(playerEnv, coinImg),
+    createDashboardLayer(playerController, coinImg),
   );
 
   const input = setupKeyboard(mario);
@@ -53,9 +60,6 @@ async function main(canvas) {
   const timer = new Timer(deltaTime);
   timer.update = function update(deltaTime) {
     level.update(deltaTime);
-
-    camera.pos.x = Math.min(Math.max(0, Math.floor(mario.pos.x) - 100), 3100)
-
     level.compositor.draw(context, camera);
   }
 

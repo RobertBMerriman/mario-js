@@ -31,7 +31,7 @@ function createEntityCollisionLayer(entities) {
       context.beginPath();
       context.rect(
         entity.bounds.left - camera.pos.x, entity.bounds.top - camera.pos.y,
-        entity.size.x, entity.size.y);
+        entity.bounds.right - entity.bounds.left, entity.bounds.bottom - entity.bounds.top);
       context.stroke();
     });
   }

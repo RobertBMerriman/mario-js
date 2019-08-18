@@ -38,6 +38,9 @@ function createMarioFactory(sprite) {
   return function createMario() {
     const mario = new Entity();
     mario.size.set(12, 16);
+    mario.offset.set(2, 2, 2, 0)
+    mario.score = 0
+    mario.coins = 79
 
     mario.addTrait(new Solid())
     mario.addTrait(new Physics())

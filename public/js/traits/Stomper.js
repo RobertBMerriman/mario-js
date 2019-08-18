@@ -10,6 +10,8 @@ export default class Stomper extends Trait {
     us.bounds.bottom = them.bounds.top
     us.vel.y = -this.bounceSpeed
     this.queueBounce = true
+
+    us.score += 100
   }
 
   collides (us, them) {

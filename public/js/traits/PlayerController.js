@@ -1,27 +1,29 @@
-import {Trait} from '../Entity.js';
 import { Vec2 } from '../math.js'
 
-export default class PlayerController extends Trait {
+export default class PlayerController {
   constructor() {
-    super('playerController');
     this.player = null
     this.checkpoint = new Vec2(0, 0)
-    this.time = 300
-    this.score = 100
-    this.coins = 79
+    this.initalTime = 300
+
+    this.time = this.initalTime
   }
 
   setPlayer(entity) {
     this.player = entity
   }
 
-  update (entity, deltaTime, level) {
+  update (deltaTime, level) {
     if (!level.entities.has(this.player)) {
       this.player.killable.revive()
       this.player.pos.set(this.checkpoint.x, this.checkpoint.y)
       level.entities.add(this.player)
     } else {
       this.time -= deltaTime * 2
+      if (this.time <= 0) {
+        this.player.killable.kill()
+        this.time = this.initalTime
+      }
     }
   }
 }

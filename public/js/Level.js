@@ -4,7 +4,10 @@ import EntityCollider from './EntityCollider.js'
 
 export default class Level {
 
-  constructor() {
+  constructor(camera, playerController) {
+    this.camera = camera
+    this.playerController = playerController
+
     this.gravity = 1500;
     this.totalTime = 0;
 
@@ -12,6 +15,7 @@ export default class Level {
     this.entities = new Set();
     this.entityCollider = new EntityCollider(this.entities)
     this.tileCollider = null;
+
   }
 
   setCollisionGrid(matrix) {
@@ -22,7 +26,9 @@ export default class Level {
     this.totalTime += deltaTime;
 
     this.entities.forEach(entity => {
-      entity.update(deltaTime, this);
+      if (this.camera.contains(entity)) {
+        entity.update(deltaTime, this);
+      }
     })
 
     this.entities.forEach(entity => {
@@ -30,8 +36,9 @@ export default class Level {
     });
 
     this.entities.forEach(entity => entity.finalise())
+
+    this.playerController.update(deltaTime, this)
+    this.camera.update(this.playerController.player)
   }
-
-
 
 }

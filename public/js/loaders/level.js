@@ -33,7 +33,7 @@ function setupEntities(levelSpec, level, entityFactory) {
 }
 
 export function createLevelLoader(entityFactory) {
-  return function loadLevel (name, camera) {
+  return function loadLevel (name, camera, playerController) {
     return loadJson(`/levels/${name}.json`)
       .then(levelSpec => Promise.all([
         levelSpec,
@@ -42,7 +42,7 @@ export function createLevelLoader(entityFactory) {
                   levelSpec,
                   backgroundSprites,
                 ]) => {
-        const level = new Level();
+        const level = new Level(camera, playerController);
 
         setupCollision(levelSpec, level)
 

@@ -25,6 +25,7 @@ class Behaviour extends Trait {
   }
 
   handleDestory(us) {
+    this.handleKill(us)
     us.solid.obstructs = false
     us.vel.set(Math.sign(us.pendulumMove.speed) * 100, -200)
   }
@@ -59,7 +60,7 @@ function createGoombaFactory(sprite) {
   return function createGoomba() {
     const goomba = new Entity();
     goomba.size.set(12, 16);
-    goomba.offset.set(2, 0)
+    goomba.offset.set(2, 0, -3, 0)
 
     goomba.addTrait(new Solid())
     goomba.addTrait(new Physics())

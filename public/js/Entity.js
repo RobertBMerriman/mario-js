@@ -1,4 +1,4 @@
-import {Vec2} from './math.js';
+import { Vec2, Vec4} from './math.js';
 import BoundingBox from './BoundingBox.js'
 
 export const Sides = {
@@ -41,7 +41,7 @@ export default class Entity {
     this.pos = new Vec2(0, 0);
     this.vel = new Vec2(0, 0);
     this.size = new Vec2(0, 0);
-    this.offset = new Vec2(0, 0);
+    this.offset = new Vec4(2, 2, 2, 2);
     this.bounds = new BoundingBox(this.pos, this.size, this.offset)
 
     this.traits = [];
