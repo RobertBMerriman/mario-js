@@ -1,6 +1,6 @@
 import Camera from './Camera.js';
 import Timer from './Timer.js';
-import {setupKeyboard} from './input.js';
+import { setupKeyboard, setupMouse } from './input.js';
 import { loadEntities } from './entities.js'
 import { createLevelLoader } from './loaders/level.js'
 import PlayerController from './traits/PlayerController.js'
@@ -8,6 +8,8 @@ import { createCameraLayer } from './layers/camera.js'
 import { createCollisionLayer } from './layers/collision.js'
 import { createDashboardLayer } from './layers/dashboard.js'
 import { loadImage } from './loaders.js'
+import Button from './ui/Button.js'
+import { createUiLayer } from './layers/ui.js'
 
 
 
@@ -52,16 +54,33 @@ async function main(canvas) {
     createDashboardLayer(playerController, coinImg),
   );
 
-  const input = setupKeyboard(mario);
-  input.listenTo(window);
+  const keyboard = setupKeyboard(mario);
+  keyboard.listenTo(window);
 
 
   const deltaTime = 1/60;
   const timer = new Timer(deltaTime);
   timer.update = function update(deltaTime) {
-    level.update(deltaTime);
+    //level.update(deltaTime);
     level.compositor.draw(context, camera);
   }
+
+  const cameraMidX = camera.size.x / 2
+  const cameraThirdFromBottom = camera.size.y - camera.size.y / 3
+  const playBtn = new Button(cameraMidX, cameraThirdFromBottom,80, 40, "Play", "green", () => {
+    uiElements.length = 0
+    timer.update = function update(deltaTime) {
+      level.update(deltaTime);
+      level.compositor.draw(context, camera);
+    }
+  })
+
+  const uiElements = [playBtn]
+  level.compositor.layers.push(
+    createUiLayer(uiElements)
+  );
+
+  setupMouse(canvas, uiElements);
 
   timer.start();
 }

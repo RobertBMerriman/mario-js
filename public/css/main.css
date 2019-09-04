@@ -3,6 +3,10 @@
   src: url('../smb-nes.ttf') format('truetype');
 }
 
+.screen-wrapper {
+  font-family: 'SMBNES';
+}
+
 #screen {
   image-rendering: -moz-crisp-edges;
   image-rendering: -webkit-crisp-edges;

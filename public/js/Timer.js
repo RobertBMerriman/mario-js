@@ -36,4 +36,8 @@ export default class Timer {
   start() {
     this.enqueueFrame();
   }
+
+  update(deltaTime) {
+    console.error("TIMER NOT OVERRIDDEN NOTHING WILL HAPPEN")
+  }
 }
