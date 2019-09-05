@@ -4,9 +4,12 @@ import EntityCollider from './EntityCollider.js'
 
 export default class Level {
 
-  constructor(camera, playerController) {
+  constructor(camera, playerController, width, height) {
+    camera.setLevelSize(width, height)
     this.camera = camera
     this.playerController = playerController
+    this.width = width
+    this.height = height
 
     this.gravity = 1500;
     this.totalTime = 0;
@@ -28,6 +31,16 @@ export default class Level {
     this.entities.forEach(entity => {
       if (this.camera.contains(entity)) {
         entity.update(deltaTime, this);
+      }
+      if (entity.pos.y > this.height) {
+        entity.killable.kill()
+      }
+      if (entity.bounds.left < 0) {
+        entity.solid.stop(entity)
+        entity.bounds.left = .2
+      } else if (entity.bounds.right > this.width) {
+        entity.solid.stop(entity)
+        entity.bounds.right = this.width - .2
       }
     })
 

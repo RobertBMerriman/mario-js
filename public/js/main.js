@@ -10,8 +10,15 @@ import { createDashboardLayer } from './layers/dashboard.js'
 import { loadImage } from './loaders.js'
 import Button from './ui/Button.js'
 import { createUiLayer } from './layers/ui.js'
+import Text from './ui/Text.js'
 
 
+
+const defaultFontName = 'SMBNES'
+const defaultFontSize = 8
+export function font(sizeMultiplier = 1) {
+  return `${defaultFontSize * sizeMultiplier}px ${defaultFontName}`
+}
 
 function isDebug() {
   const urlParams = new URLSearchParams(window.location.search);
@@ -29,7 +36,7 @@ function createPlayerEnv(playerEntity) {
 async function main(canvas) {
   const context = canvas.getContext('2d');
   context.imageSmoothingEnabled = false;
-  context.font = '8px SMBNES'
+  context.font = font()
   context.textBaseline = 'top';
 
   const camera = new Camera();
@@ -61,23 +68,27 @@ async function main(canvas) {
   const deltaTime = 1/60;
   const timer = new Timer(deltaTime);
   timer.update = function update(deltaTime) {
-    //level.update(deltaTime);
+    level.update(deltaTime);
     level.compositor.draw(context, camera);
   }
 
   const cameraMidX = camera.size.x / 2
-  const cameraThirdFromBottom = camera.size.y - camera.size.y / 3
-  const playBtn = new Button(cameraMidX, cameraThirdFromBottom,80, 40, "Play", "green", () => {
+  const cameraCloseToBottom = camera.size.y - camera.size.y / 4
+  const playBtn = new Button(cameraMidX, cameraCloseToBottom,60, 30, "Play", "green", () => {
     uiElements.length = 0
     timer.update = function update(deltaTime) {
       level.update(deltaTime);
       level.compositor.draw(context, camera);
     }
   })
+  const cameraMidY = camera.size.y / 2
+  const cameraLilAboveMid = cameraMidY - camera.size.y / 8
+  const marioText = new Text(cameraMidX, cameraLilAboveMid, "EXTREMELY Morio", "#E52521", 2)
+  const jxText = new Text(cameraMidX, cameraLilAboveMid + 28, "JX", "#E52521", 3)
 
-  const uiElements = [playBtn]
+  const uiElements = [playBtn, marioText, jxText]
   level.compositor.layers.push(
-    createUiLayer(uiElements)
+    // createUiLayer(uiElements)
   );
 
   setupMouse(canvas, uiElements);

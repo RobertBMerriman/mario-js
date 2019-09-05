@@ -1,6 +1,9 @@
 {
   "spriteSheet": "overworld",
 
+  "width": 3356,
+  "height": 256,
+
   "patterns": {
     "cloud-single": {
       "tiles": [

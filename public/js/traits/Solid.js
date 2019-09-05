@@ -18,10 +18,16 @@ export default class Solid extends Trait {
       entity.vel.y = 0;
     } else if (side === Sides.RIGHT) {
       entity.bounds.right = match.x1;
-      entity.vel.x = 0;
+      this.stop(entity)
     } else if (side === Sides.LEFT) {
       entity.bounds.left = match.x2;
-      entity.vel.x = 0;
+      this.stop(entity)
     }
+  }
+
+  stop(entity) {
+    entity.vel.x = 0;
+    if (entity.go)
+      entity.go.distance = 0
   }
 }

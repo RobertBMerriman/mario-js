@@ -25,6 +25,9 @@ function createMarioFactory(sprite) {
       if ((mario.vel.x > 0 && mario.go.dir < 0) || (mario.vel.x < 0 && mario.go.dir > 0)) {
         return 'brake';
       }
+      if (mario.go.distance < 0.5) {
+        return 'idle'
+      }
       return runAnim(mario.go.distance);
     }
 

@@ -42,7 +42,7 @@ export function createLevelLoader(entityFactory) {
                   levelSpec,
                   backgroundSprites,
                 ]) => {
-        const level = new Level(camera, playerController);
+        const level = new Level(camera, playerController, levelSpec.width, levelSpec.height);
 
         setupCollision(levelSpec, level)
 

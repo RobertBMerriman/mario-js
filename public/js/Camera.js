@@ -8,6 +8,11 @@ export default class Camera {
     this.size = new Vec2(256, 240);
     this.offset = new Vec4(-32, -32, -32, -32);
     this.bounds = new BoundingBox(this.pos, this.size, this.offset)
+
+    this.playerTrackingX = 100
+
+    this.levelWidth = 3000
+    this.levelHeight = 256
   }
 
   contains(entity) {
@@ -15,7 +20,12 @@ export default class Camera {
   }
 
   update(player) {
-    this.pos.x = Math.min(Math.max(0, Math.floor(player.pos.x) - 100), 3100)
+    this.pos.x = Math.min(Math.max(0, Math.floor(player.pos.x) - this.playerTrackingX), this.levelWidth)
+  }
+
+  setLevelSize(width, height) {
+    this.levelWidth = width - this.size.x
+    this.levelHeight = height
   }
 
 }
