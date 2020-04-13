@@ -4,12 +4,13 @@ export default class Stomper extends Trait {
   constructor() {
     super("stomper");
     this.bounceSpeed = 400;
+    this.didStomp = false;
   }
 
   bounce(us, them) {
     us.bounds.bottom = them.bounds.top;
     us.vel.y = -this.bounceSpeed;
-    this.queueBounce = true;
+    this.didStomp = true;
 
     us.score += 100;
   }
@@ -22,9 +23,10 @@ export default class Stomper extends Trait {
     }
   }
 
-  update(entity) {
-    if (this.queueBounce) {
-      this.queueBounce = false;
+  update(entity, { audioBoard }) {
+    if (this.didStomp) {
+      audioBoard.play("stomp");
+      this.didStomp = false;
     }
   }
 }

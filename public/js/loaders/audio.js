@@ -5,7 +5,7 @@ export function createAudioLoader(context) {
         return response.arrayBuffer();
       })
       .then((arrayBuffer) => {
-        console.log(arrayBuffer);
+        return context.decodeAudioData(arrayBuffer);
       });
   };
 }

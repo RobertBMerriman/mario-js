@@ -16,7 +16,7 @@ export default class Go extends Trait {
     this.heading = 1;
   }
 
-  update(entity, deltaTime) {
+  update(entity, { deltaTime }) {
     if (this.dir !== 0) {
       entity.vel.x += this.acceleration * deltaTime * this.dir;
 

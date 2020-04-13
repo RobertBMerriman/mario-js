@@ -28,7 +28,7 @@ export class Trait {
 
   obstruct(entity, side, match) {}
 
-  update(entity, deltaTime, level) {}
+  update(entity, gameContext, level) {}
 }
 
 export default class Entity {
@@ -67,11 +67,11 @@ export default class Entity {
     this.traits.forEach((trait) => trait.finalise());
   }
 
-  update(deltaTime, level) {
-    this.lifetime += deltaTime;
+  update(gameContext, level) {
+    this.lifetime += gameContext.deltaTime;
 
     this.traits.forEach((trait) => {
-      trait.update(this, deltaTime, level);
+      trait.update(this, gameContext, level);
     });
   }
 }

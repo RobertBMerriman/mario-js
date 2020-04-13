@@ -1,17 +1,18 @@
+import AudioBoard from "./AudioBoard.js";
+import Button from "./ui/Button.js";
 import Camera from "./Camera.js";
-import Timer from "./Timer.js";
-import { setupKeyboard, setupMouse } from "./input.js";
-import { loadEntities } from "./entities.js";
-import { createLevelLoader } from "./loaders/level.js";
-import { createAudioLoader } from "./loaders/audio.js";
 import PlayerController from "./traits/PlayerController.js";
+import Text from "./ui/Text.js";
+import Timer from "./Timer.js";
+import { createAudioLoader } from "./loaders/audio.js";
 import { createCameraLayer } from "./layers/camera.js";
 import { createCollisionLayer } from "./layers/collision.js";
 import { createDashboardLayer } from "./layers/dashboard.js";
-import { loadImage } from "./loaders.js";
-import Button from "./ui/Button.js";
+import { createLevelLoader } from "./loaders/level.js";
 import { createUiLayer } from "./layers/ui.js";
-import Text from "./ui/Text.js";
+import { loadEntities } from "./entities.js";
+import { loadImage } from "./loaders.js";
+import { setupKeyboard, setupMouse } from "./input.js";
 
 const defaultFontName = "SMBNES";
 const defaultFontSize = 8;
@@ -45,8 +46,14 @@ async function main(canvas) {
   const playerController = createPlayerEnv(mario);
 
   const audioContext = new AudioContext();
+  const audioBoard = new AudioBoard(audioContext);
   const loadAudio = createAudioLoader(audioContext);
-  loadAudio("/audio/jump.ogg");
+  loadAudio("/audio/jump.ogg").then((buffer) => {
+    audioBoard.addSound("jump", buffer);
+  });
+  loadAudio("/audio/stomp.ogg").then((buffer) => {
+    audioBoard.addSound("stomp", buffer);
+  });
 
   const loadLevel = createLevelLoader(entityFactory);
   const level = await loadLevel("1-1", camera, playerController);
@@ -62,10 +69,17 @@ async function main(canvas) {
   const keyboard = setupKeyboard(mario);
   keyboard.listenTo(window);
 
+  const gameContext = {
+    audioBoard,
+    level,
+    deltaTime: null,
+  };
+
   const deltaTime = 1 / 60;
   const timer = new Timer(deltaTime);
   timer.update = function update(deltaTime) {
-    level.update(deltaTime);
+    gameContext.deltaTime = deltaTime;
+    level.update(gameContext);
     level.compositor.draw(context, camera);
   };
 
@@ -92,4 +106,9 @@ async function main(canvas) {
 }
 
 const canvas = document.getElementById("screen");
-main(canvas);
+
+const start = () => {
+  window.removeEventListener("click", start);
+  main(canvas);
+};
+window.addEventListener("click", start);

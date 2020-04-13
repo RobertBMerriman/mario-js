@@ -1,4 +1,4 @@
-import { Trait, Sides } from "../Entity.js";
+import { Trait } from "../Entity.js";
 
 export default class Physics extends Trait {
   constructor() {
@@ -7,7 +7,7 @@ export default class Physics extends Trait {
     this.obstructs = true;
   }
 
-  update(entity, deltaTime, level) {
+  update(entity, { deltaTime }, level) {
     entity.pos.x += entity.vel.x * deltaTime;
     level.tileCollider.checkX(entity);
 

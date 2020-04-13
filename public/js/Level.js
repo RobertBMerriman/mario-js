@@ -23,12 +23,12 @@ export default class Level {
     this.tileCollider = new TileCollider(matrix);
   }
 
-  update(deltaTime) {
-    this.totalTime += deltaTime;
+  update(gameContext) {
+    this.totalTime += gameContext.deltaTime;
 
     this.entities.forEach((entity) => {
       if (this.camera.contains(entity)) {
-        entity.update(deltaTime, this);
+        entity.update(gameContext, this);
       }
       if (entity.pos.y > this.height) {
         entity.killable.kill();
@@ -48,7 +48,7 @@ export default class Level {
 
     this.entities.forEach((entity) => entity.finalise());
 
-    this.playerController.update(deltaTime, this);
+    this.playerController.update(gameContext.deltaTime, this);
     this.camera.update(this.playerController.player);
   }
 }
