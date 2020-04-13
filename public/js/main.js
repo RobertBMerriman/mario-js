@@ -3,6 +3,7 @@ import Timer from "./Timer.js";
 import { setupKeyboard, setupMouse } from "./input.js";
 import { loadEntities } from "./entities.js";
 import { createLevelLoader } from "./loaders/level.js";
+import { createAudioLoader } from "./loaders/audio.js";
 import PlayerController from "./traits/PlayerController.js";
 import { createCameraLayer } from "./layers/camera.js";
 import { createCollisionLayer } from "./layers/collision.js";
@@ -43,6 +44,10 @@ async function main(canvas) {
   const mario = entityFactory.mario();
   const playerController = createPlayerEnv(mario);
 
+  const audioContext = new AudioContext();
+  const loadAudio = createAudioLoader(audioContext);
+  loadAudio("/audio/jump.ogg");
+
   const loadLevel = createLevelLoader(entityFactory);
   const level = await loadLevel("1-1", camera, playerController);
 
@@ -79,7 +84,7 @@ async function main(canvas) {
   const jxText = new Text(cameraMidX, cameraLilAboveMid + 28, "JX", "#E52521", 3);
 
   const uiElements = [playBtn, marioText, jxText];
-  level.compositor.layers.push(createUiLayer(uiElements));
+  // level.compositor.layers.push(createUiLayer(uiElements));
 
   setupMouse(canvas, uiElements);
 
