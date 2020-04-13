@@ -1,15 +1,15 @@
-import {Trait} from '../Entity.js';
+import { Trait } from "../Entity.js";
 
 export default class Go extends Trait {
   constructor() {
-    super('go');
+    super("go");
 
     this.dir = 0;
     this.acceleration = 800;
     this.decceleration = 300;
 
-    this.walkDrag = 1/1400;
-    this.runDrag = 1/4500;
+    this.walkDrag = 1 / 1400;
+    this.runDrag = 1 / 4500;
     this.dragFactor = this.walkDrag;
 
     this.distance = 0;

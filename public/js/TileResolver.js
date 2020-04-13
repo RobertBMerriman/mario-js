@@ -1,5 +1,4 @@
 export default class TileResolver {
-
   constructor(matrix, tileSize = 16) {
     this.matrix = matrix;
     this.tileSize = tileSize;
@@ -43,14 +42,12 @@ export default class TileResolver {
 
   searchByRange(x1, x2, y1, y2) {
     const matches = [];
-    this.toIndexRange(x1, x2).forEach(indexX => {
-      this.toIndexRange(y1, y2).forEach(indexY => {
+    this.toIndexRange(x1, x2).forEach((indexX) => {
+      this.toIndexRange(y1, y2).forEach((indexY) => {
         const match = this.getByIndex(indexX, indexY);
-        if (match)
-          matches.push(match);
+        if (match) matches.push(match);
       });
     });
     return matches;
   }
-
 }

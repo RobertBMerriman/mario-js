@@ -1,6 +1,5 @@
 export default class Timer {
-
-  constructor(deltaTime = 1/60) {
+  constructor(deltaTime = 1 / 60) {
     let accumulatedTime = 0;
     let lastTime = 0;
     let skipTwo = 0;
@@ -26,7 +25,7 @@ export default class Timer {
       }
 
       this.enqueueFrame();
-    }
+    };
   }
 
   enqueueFrame() {
@@ -38,6 +37,6 @@ export default class Timer {
   }
 
   update(deltaTime) {
-    console.error("TIMER NOT OVERRIDDEN NOTHING WILL HAPPEN")
+    console.error("TIMER NOT OVERRIDDEN NOTHING WILL HAPPEN");
   }
 }

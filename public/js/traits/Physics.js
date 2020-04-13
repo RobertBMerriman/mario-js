@@ -1,10 +1,10 @@
-import { Trait, Sides } from '../Entity.js'
+import { Trait, Sides } from "../Entity.js";
 
 export default class Physics extends Trait {
   constructor() {
-    super('physics')
+    super("physics");
 
-    this.obstructs = true
+    this.obstructs = true;
   }
 
   update(entity, deltaTime, level) {

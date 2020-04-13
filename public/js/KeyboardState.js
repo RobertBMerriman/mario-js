@@ -2,7 +2,6 @@ const PRESSED = 1;
 const RELEASED = 0;
 
 export default class KeyboardState {
-
   //TODO constructor takes default listenTo?
   constructor() {
     // Holds the current state of a given key
@@ -17,7 +16,7 @@ export default class KeyboardState {
   }
 
   handleEvent(event) {
-    const {code} = event; // Extracts code property from object
+    const { code } = event; // Extracts code property from object
 
     if (!this.keyMap.has(code)) {
       return;
@@ -25,7 +24,7 @@ export default class KeyboardState {
 
     event.preventDefault();
 
-    const keyState = event.type === 'keydown' ? PRESSED : RELEASED;
+    const keyState = event.type === "keydown" ? PRESSED : RELEASED;
 
     if (this.keyStates.get(code) === keyState) {
       return;
@@ -36,11 +35,10 @@ export default class KeyboardState {
   }
 
   listenTo(window) {
-    ['keydown', 'keyup'].forEach((eventName) => {
+    ["keydown", "keyup"].forEach((eventName) => {
       window.addEventListener(eventName, (event) => {
         this.handleEvent(event);
       });
     });
   }
-
 }

@@ -6,10 +6,7 @@ export default class BoundingBox {
   }
 
   overlaps(box) {
-    return this.bottom > box.top
-      && this.top < box.bottom
-      && this.left < box.right
-      && this.right > box.left;
+    return this.bottom > box.top && this.top < box.bottom && this.left < box.right && this.right > box.left;
   }
 
   get bottom() {

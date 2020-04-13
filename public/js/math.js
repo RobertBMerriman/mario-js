@@ -14,7 +14,7 @@ export class Matrix {
   get(x, y) {
     const col = this.grid[x];
     if (col) {
-      return col[y]
+      return col[y];
     }
 
     return undefined;
@@ -31,36 +31,36 @@ export class Matrix {
 
 export class Vec2 {
   constructor(x, y) {
-    this.set(x, y)
+    this.set(x, y);
   }
 
   set(x, y) {
-    this.x = x
-    this.y = y
+    this.x = x;
+    this.y = y;
   }
 }
 
 export class Vec3 {
   constructor(x, y, z) {
-    this.set(x, y, z)
+    this.set(x, y, z);
   }
 
   set(x, y, z) {
-    this.x = x
-    this.y = y
-    this.z = z
+    this.x = x;
+    this.y = y;
+    this.z = z;
   }
 }
 
 export class Vec4 {
   constructor(x, y, z, w) {
-    this.set(x, y, z, w)
+    this.set(x, y, z, w);
   }
 
   set(x, y, z, w) {
-    this.x = x
-    this.y = y
-    this.z = z
-    this.w = w
+    this.x = x;
+    this.y = y;
+    this.z = z;
+    this.w = w;
   }
 }
