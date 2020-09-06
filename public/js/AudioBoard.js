@@ -1,6 +1,5 @@
 export default class AudioBoard {
-  constructor(context) {
-    this.context = context;
+  constructor() {
     this.buffers = new Map();
   }
 
@@ -8,12 +7,12 @@ export default class AudioBoard {
     this.buffers.set(name, buffer);
   }
 
-  play(name) {
-    const source = this.context.createBufferSource();
+  play(name, audioContext) {
+    const source = audioContext.createBufferSource();
 
-    const gainNode = this.context.createGain();
+    const gainNode = audioContext.createGain();
     gainNode.gain.value = 0.2;
-    gainNode.connect(this.context.destination);
+    gainNode.connect(audioContext.destination);
 
     source.connect(gainNode);
     source.buffer = this.buffers.get(name);

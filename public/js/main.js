@@ -1,10 +1,8 @@
-import AudioBoard from "./AudioBoard.js";
 import Button from "./ui/Button.js";
 import Camera from "./Camera.js";
 import PlayerController from "./traits/PlayerController.js";
 import Text from "./ui/Text.js";
 import Timer from "./Timer.js";
-import { createAudioLoader } from "./loaders/audio.js";
 import { createCameraLayer } from "./layers/camera.js";
 import { createCollisionLayer } from "./layers/collision.js";
 import { createDashboardLayer } from "./layers/dashboard.js";
@@ -34,6 +32,8 @@ function createPlayerEnv(playerEntity) {
 }
 
 async function main(canvas) {
+  const audioContext = new AudioContext();
+
   const context = canvas.getContext("2d");
   context.imageSmoothingEnabled = false;
   context.font = font();
@@ -41,19 +41,9 @@ async function main(canvas) {
 
   const camera = new Camera();
 
-  const entityFactory = await loadEntities();
+  const entityFactory = await loadEntities(audioContext);
   const mario = entityFactory.mario();
   const playerController = createPlayerEnv(mario);
-
-  const audioContext = new AudioContext();
-  const audioBoard = new AudioBoard(audioContext);
-  const loadAudio = createAudioLoader(audioContext);
-  loadAudio("/audio/jump.ogg").then((buffer) => {
-    audioBoard.addSound("jump", buffer);
-  });
-  loadAudio("/audio/stomp.ogg").then((buffer) => {
-    audioBoard.addSound("stomp", buffer);
-  });
 
   const loadLevel = createLevelLoader(entityFactory);
   const level = await loadLevel("1-1", camera, playerController);
@@ -70,8 +60,7 @@ async function main(canvas) {
   keyboard.listenTo(window);
 
   const gameContext = {
-    audioBoard,
-    level,
+    audioContext,
     deltaTime: null,
   };
 

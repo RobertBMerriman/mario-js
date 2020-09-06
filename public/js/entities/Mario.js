@@ -6,12 +6,15 @@ import Stomper from "../traits/Stomper.js";
 import Killable from "../traits/Killable.js";
 import Solid from "../traits/Solid.js";
 import Physics from "../traits/Physics.js";
+import { loadAudioBoard } from "../loaders/audio.js";
 
-export function loadMario() {
-  return loadSpriteSheet("mario").then(createMarioFactory);
+export function loadMario(audioContext) {
+  return Promise.all([loadSpriteSheet("mario"), loadAudioBoard("mario", audioContext)]).then(([sprite, audioBoard]) =>
+    createMarioFactory(sprite, audioBoard)
+  );
 }
 
-function createMarioFactory(sprite) {
+function createMarioFactory(sprite, audioBoard) {
   const runAnim = sprite.animations.get("run");
 
   function routeFrame(mario) {
@@ -38,6 +41,7 @@ function createMarioFactory(sprite) {
 
   return function createMario() {
     const mario = new Entity();
+    mario.audio = audioBoard;
     mario.size.set(12, 16);
     mario.offset.set(2, 2, 2, 0);
     mario.score = 0;
